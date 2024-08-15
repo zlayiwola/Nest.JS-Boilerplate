@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn NestJS with TypeScript: A Guide for Building Scalable Apps</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <aside class="sidebar">
+        <ul>
+            <li><a href="#">Introduction</a></li>
+            <li><a href="#">Step 1: Install NestJS with TypeScript</a></li>
+            <li><a href="#">Step 2: Explore the Project Structure</a></li>
+            <li><a href="#">Step 3: Use Modular Architecture</a></li>
+            <li><a href="#">Step 4: Leverage Dependency Injection</a></li>
+            <li><a href="#">Step 5: Implement TypeScript Interfaces and DTOs</a></li>
+            <li><a href="#">Step 6: Testing with Jest</a></li>
+            <li><a href="#">Conclusion</a></li>
+        </ul>
+    </aside>
+    <main class="content">
+        <header>
+            <h1>Learn NestJS with TypeScript: A Guide for Building Scalable Apps</h1>
+            <p>Step-by-step guide to building scalable apps with NestJS and TypeScript.</p>
+            <p>NestJS is a powerful framework for building server-side applications, and when combined with TypeScript, it
+                becomes a robust tool for creating scalable and maintainable projects. Here’s a quick guide to getting started
+                with NestJS and TypeScript.</p>
+        </header>
+
+        <section>
+            <h2>Step 1: Install NestJS with TypeScript</h2>
+            <p>Start by installing the NestJS CLI, which will help you set up a new project:</p>
+            <pre><code>npm install -g @nestjs/cli</code></pre>
+            <pre><code>nest new my-nestjs-app</code></pre>
+            <p>This creates a new project with TypeScript as the default language.</p>
+        </section>
+
+        <section>
+            <h2>Step 2: Explore the Project Structure</h2>
+            <p>NestJS projects are modular by design, which makes scaling easier. Key components include:</p>
+            <ul>
+                <li><code>src/app.module.ts</code>: The root module.</li>
+                <li><code>src/main.ts</code>: The entry point of your application.</li>
+                <li><code>src/controllers/</code>: Handles HTTP requests.</li>
+                <li><code>src/services/</code>: Contains business logic.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Step 3: Use Modular Architecture</h2>
+            <p>NestJS encourages modularity, which is crucial for scalability. Break down your application into feature
+                modules, each responsible for a specific part of the app.</p>
+            <pre><code>@Module({
+  imports: [UserModule, ProductsModule],
+})
+export class AppModule {}</code></pre>
+            <p>This keeps your application organized and easy to manage.</p>
+        </section>
+
+        <section>
+            <h2>Step 4: Leverage Dependency Injection</h2>
+            <p>NestJS uses dependency injection to manage services, promoting loose coupling. This is key to building scalable
+                applications.</p>
+            <pre><code>@Injectable()
+export class UsersService {
+  constructor(private readonly userRepository: UserRepository) {}
+}</code></pre>
+            <p>This approach makes your code more maintainable and testable.</p>
+        </section>
+
+        <section>
+            <h2>Step 5: Implement TypeScript Interfaces and DTOs</h2>
+            <p>Use TypeScript interfaces and Data Transfer Objects (DTOs) to define and enforce data structures.</p>
+            <pre><code>export interface User {
+  id: number;
+  name: string;
+}
+
+export class CreateUserDto {
+  readonly name: string;
+}</code></pre>
+            <p>This ensures type safety and consistency across your application.</p>
+        </section>
+
+        <section>
+            <h2>Step 6: Testing with Jest</h2>
+            <p>NestJS integrates with Jest for testing, which is vital for maintaining code quality as your application grows.
+            </p>
+            <pre><code>describe('UsersService', () => {
+  let service: UsersService;
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [UsersService],
+    }).compile();
+
+    service = module.get<UsersService>(UsersService);
+  });
+
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+});</code></pre>
+            <p>Testing helps catch bugs early and ensures your application behaves as expected.</p>
+        </section>
+
+        <footer>
+            <p>&copy; 2024 All Rights Reserved | HNG Boilerplate</p>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <p><strong>Navigation</strong></p>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Feature updates</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <p><strong>Support</strong></p>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Waiting list</a></li>
+                        <li><a href="#">Pricing Experience</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <p><strong>Legal</strong></p>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms and condition</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <p><strong>Sign Up For Newsletter</strong></p>
+                    <form>
+                        <input type="email" placeholder="Enter Email" required>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </footer>
+    </main>
+</body>
+
+</html>
