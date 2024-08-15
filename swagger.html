@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Add Swagger to Your NextJS API</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <aside class="sidebar">
+        <ul>
+            <li><a href="#">Introduction</a></li>
+            <li><a href="#">Step 1: Install Swagger in your NextJS Project</a></li>
+            <li><a href="#">Step 2: Configure Swagger in your main Application</a></li>
+            <li><a href="#">Step 3: Enhance Documentation with Swagger Decorators</a></li>
+            <li><a href="#">Step 4: Access and Explore API Documentation</a></li>
+            <li><a href="#">Conclusion</a></li>
+        </ul>
+    </aside>
+
+    <main class="content">
+        <header>
+            <h1>How to Add Swagger to Your NextJS API for Better Documentation</h1>
+            <p>Learn step-by-step how to integrate Swagger in your NextJS project to create clear and easy-to-use API documentation.</p>
+            <p>Creating well-documented APIs is essential for developers, especially in larger projects or team environments. NextJS, a powerful Node.js framework, provides a streamlined way to build scalable server-side applications. By integrating Swagger, you can automatically generate clear and interactive API documentation, making your project easier to understand and use. In this article, we’ll guide you through the steps to integrate Swagger into your NextJS project, ensuring your API documentation is both comprehensive and user-friendly.</p>
+        </header>
+
+        <section>
+            <h2>Step 1: Install Swagger in Your NextJS Project</h2>
+            <p>To get started with NextJS Swagger integration, the first step is to install the necessary packages. You’ll need both <code>@nestjs/swagger</code> and <code>swagger-ui-express</code>. These packages will allow you to create and serve your API documentation.</p>
+            <pre><code>npm install @nestjs/swagger swagger-ui-express</code></pre>
+            <p>This will add the required dependencies to your NextJS project, enabling Swagger’s API documentation capabilities.</p>
+        </section>
+
+        <section>
+            <h2>Step 2: Configure Swagger in Your Main Application</h2>
+            <p>Next, you need to set up Swagger in your NextJS application’s entry file, typically main.ts. Using the <code>SwaggerModule</code> from <code>@nestjs/swagger</code>, you can easily configure and generate your API documentation.</p>
+            <pre><code>import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+
+  const config = new DocumentBuilder()
+    .setTitle('API Documentation')
+    .setDescription('API description')
+    .setVersion('1.0')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api-docs', app, document);
+
+  await app.listen(3000);
+}
+bootstrap();</code></pre>
+            <p>In this setup:</p>
+            <ul>
+                <li>The <code>DocumentBuilder</code> allows you to customize your Swagger documentation by setting the title, description, and version.</li>
+                <li>The <code>SwaggerModule.setup()</code> method specifies the endpoint (<code>api-docs</code>) where the documentation will be accessible.</li>
+            </ul>
+            <p>This simple setup ensures that your API documentation is automatically generated and accessible via a browser.</p>
+        </section>
+
+        <section>
+            <h2>Step 3: Enhance Documentation with Swagger Decorators</h2>
+            <p>To make the most of your NextJS Swagger integration, you should use the decorators provided by <code>@nestjs/swagger</code> to enhance your API documentation. These decorators allow you to define the structure and behavior of your API endpoints directly within your code.</p>
+            <pre><code>import { Controller, Get } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+
+@ApiTags('users')
+@Controller('users')
+export class UsersController {
+
+  @Get()
+  @ApiOperation({ summary: 'Retrieve all users' })
+  @ApiResponse({ status: 200, description: 'List of users' })
+  getUsers() {
+    // Logic to retrieve users
+  }
+}</code></pre>
+            <p>In this example:</p>
+            <ul>
+                <li><code>@ApiTags()</code> groups related endpoints together under a common label in the Swagger UI.</li>
+                <li><code>@ApiOperation()</code> provides a brief description of what the endpoint does.</li>
+                <li><code>@ApiResponse()</code> describes the expected HTTP response for the endpoint, including status codes and descriptions.</li>
+            </ul>
+            <p>These decorators help ensure your API documentation is not only comprehensive but also intuitive and easy to navigate.</p>
+        </section>
+
+        <section>
+            <h2>Step 4: Access and Explore Your API Documentation</h2>
+            <p>Once you’ve set up Swagger, start your NextJS application and navigate to <code>http://localhost:3000/api-docs</code> in your browser. This URL will take you to an interactive Swagger UI where you can view and test your API endpoints. The interface makes it easy to understand the capabilities of your API and how to interact with it, which is invaluable for both development and collaboration.</p>
+        </section>
+
+        <section>
+            <h2>Conclusion</h2>
+            <p><strong>Comprehensive Solutions:</strong> Integrating Swagger into your NextJS project is a straightforward process that greatly improves the quality of your API documentation. By following the steps outlined in this article, you can create professional-grade documentation that is both detailed and user-friendly. The NextJS Swagger integration not only enhances the developer experience but also makes your API more accessible and maintainable.</p>
+            <p>Adding Swagger to your NextJS application is a valuable step toward better documentation and improved project management. Whether you’re working solo or with a team, having clear and interactive API documentation will save time and reduce errors, making your development process smoother and more efficient.</p>
+        </section>
+
+
+        <footer>
+            <p>&copy; 2024 All Rights Reserved | HNG Boilerplate</p>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <p><strong>Navigation</strong></p>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Feature updates</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <p><strong>Support</strong></p>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Waiting list</a></li>
+                        <li><a href="#">Pricing Experience</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <p><strong>Legal</strong></p>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms and condition</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <p><strong>Sign Up For Newsletter</strong></p>
+                    <form>
+                        <input type="email" placeholder="Enter Email" required>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </footer>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building Robust APIs with NextJS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <aside class="sidebar">
+        <ul>
+            <li><a href="#">Introduction</a></li>
+            <li><a href="#">Step 1: Setting up Your NextJS Project</a></li>
+            <li><a href="#">Step 2: Creating a Module and Controller</a></li>
+            <li><a href="#">Step 3: Implementing Services and Business Logic</a></li>
+            <li><a href="#">Step 4: Connecting to a Database</a></li>
+            <li><a href="#">Step 5: Securing Your API</a></li>
+            <li><a href="#">Step 6: Adding Validation and Error Handling</a></li>
+            <li><a href="#">Conclusion</a></li>
+        </ul>
+    </aside>
+
+    <main class="content">
+        <header>
+            <h1>Building Robust APIs with NextJS: A Step-by-Step Guide</h1>
+            <p>Learn how to create secure, scalable, and efficient APIs using the NextJS framework.</p>
+            <p>Building a robust API is essential for modern applications that interact with a backend server. In this guide, we will take you through the process of setting up a NextJS project, creating modules, implementing business logic, connecting to a database, and securing your API. By the end of this guide, you will have a solid foundation for building scalable and maintainable APIs with NextJS.</p>
+        </header>
+
+        <section>
+            <h2>Step 1: Setting up Your NextJS Project</h2>
+            <p>To get started with NextJS, begin by installing the CLI and creating a new project. NextJS comes with a powerful set of tools that streamline the development process.</p>
+            <pre><code>npm install -g @nestjs/cli
+nest new my-nextjs-api</code></pre>
+            <p>This command will install the NextJS CLI and create a new project.</p>
+        </section>
+
+        <section>
+            <h2>Step 2: Creating a Module and Controller</h2>
+            <p>Next, create a new module and controller, which form the basic structure of your API.</p>
+            <pre><code>nest generate module users
+nest generate controller users</code></pre>
+            <p>This will create a <code>users.module.ts</code> and <code>users.controller.ts</code> file in your project directory.</p>
+        </section>
+
+        <section>
+            <h2>Step 3: Implementing Services and Business Logic</h2>
+            <p>In NextJS, services are used to implement the business logic of your application. Create a new service within the users module.</p>
+            <pre><code>nest generate service users</code></pre>
+            <p>Now, update the logic in the users service to handle business logic.</p>
+            <pre><code>import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class UsersService {
+  private users = [];
+
+  findAll() {
+    return this.users;
+  }
+
+  create(user) {
+    this.users.push(user);
+  }
+}</code></pre>
+            <p>Update the UsersController to use this service.</p>
+            <pre><code>import { Controller, Get, Post, Body } from '@nestjs/common';
+import { UsersService } from './users.service';
+
+@Controller('users')
+export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
+
+  @Get()
+  findAll() {
+    return this.usersService.findAll();
+  }
+
+  @Post()
+  create(@Body() user) {
+    this.usersService.create(user);
+  }
+}</code></pre>
+            <p>This service and controller setup allows you to retrieve and create users via API calls.</p>
+        </section>
+
+        <section>
+            <h2>Step 4: Connecting to a Database</h2>
+            <p>Most APIs require a database connection to store and retrieve data. NextJS provides many ways to integrate databases. For this example, we will use a simple in-memory array for data storage.</p>
+            <pre><code>npm install --save @nestjs/typeorm typeorm mysql</code></pre>
+            <p>Then, configure the database connection in your <code>app.module.ts</code>.</p>
+            <pre><code>import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersModule } from './users/users.module';
+
+@Module({
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: '',
+      database: 'test',
+      entities: [],
+      synchronize: true,
+    }),
+    UsersModule,
+  ],
+})
+export class AppModule {}</code></pre>
+            <p>This setup configures a MySQL database connection for your NextJS API.</p>
+        </section>
+
+        <section>
+            <h2>Step 5: Securing Your API</h2>
+            <p>Securing your API is crucial. NextJS offers tools to help secure your API from common threats like SQL injection and XSS attacks. Here, we will set up basic JWT authentication.</p>
+            <pre><code>npm install --save @nestjs/jwt passport-jwt</code></pre>
+            <p>Next, configure JWT authentication in your auth module.</p>
+            <pre><code>import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import { AuthService } from './auth.service';
+import { JwtStrategy } from './jwt.strategy';
+
+@Module({
+  imports: [
+    PassportModule,
+    JwtModule.register({
+      secret: 'secretKey',
+      signOptions: { expiresIn: '60s' },
+    }),
+  ],
+  providers: [AuthService, JwtStrategy],
+  exports: [AuthService],
+})
+export class AuthModule {}</code></pre>
+            <p>This setup secures your API by requiring JWT tokens for protected routes.</p>
+        </section>
+
+        <section>
+            <h2>Step 6: Adding Validation and Error Handling</h2>
+            <p>Adding validation and error handling ensures that your API responds correctly to invalid input. First, install the necessary packages:</p>
+            <pre><code>npm install --save class-validator class-transformer</code></pre>
+            <p>Now, apply DTOs in your controller to validate incoming requests:</p>
+            <pre><code>import { IsString, IsInt } from 'class-validator';
+
+export class CreateUserDto {
+  @IsString()
+  readonly name: string;
+
+  @IsInt()
+  readonly age: number;
+}</code></pre>
+            <p>This approach helps ensure that incoming requests are properly validated and errors are handled gracefully.</p>
+        </section>
+
+        <section>
+            <h2>Conclusion</h2>
+            <p>Building a secure and robust API is critical for modern applications. By following this step-by-step guide, you have learned how to set up a NextJS project, create modules and controllers, implement services, connect to a database, secure your API, and add validation and error handling. With these techniques, you can build scalable and maintainable APIs that provide a solid foundation for your applications. Start coding today and build a professional-grade API!</p>
+        </section>
+
+        <footer>
+            <p>&copy; 2024 All Rights Reserved | HNG Boilerplate</p>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <p><strong>Navigation</strong></p>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Feature updates</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <p><strong>Support</strong></p>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Waiting list</a></li>
+                        <li><a href="#">Pricing Experience</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <p><strong>Legal</strong></p>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms and condition</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <p><strong>Sign Up For Newsletter</strong></p>
+                    <form>
+                        <input type="email" placeholder="Enter Email" required>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </footer>
+    </main>
+</body>
+
+</html>
